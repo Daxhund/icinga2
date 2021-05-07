@@ -31,16 +31,17 @@ Zusätzliche zur icinga2 Engine wird eine Sammelung an bewehrten Check-Commands 
 Abfragen(Host/Service-Checks) ausführen zu können. Die Sammlung kann unter `/usr/lib/nagios/plugins` eingesehen und beliebig erweitert werden.
 ```
 apt-get install icinga2 monitoring-plugins 
+systemctl enable icinga2
 ```
-Für eine vollfunktionsfähige Installation benötigt icinga2 ein Datenbank Backend zum Speichern aller Objekte und checkergebnisse.
-Die Datenbank(IDO = Icinga Data Output) wird ebenfalls von Icingaweb2 verwendet.
+Für eine vollfunktionsfähige Installation benötigt icinga2 ein Datenbank Backend zum Speichern aller Objekte und Checkergebnisse.
+Diese Datenbank(IDO = Icinga Data Output) wird ebenfalls von Icingaweb2 verwendet. 
 
 ```
 apt-get install icinga2-ido-mysql
 ```
 Während der Installation wird ein Deployment Wizard automatisch gestartet. Dieses verwenden wir nicht und konfigurieren die Anbindung manuell. 
 
-    sudo nano /etc/icinga2/features-available/ido-mysql.conf
+    nano /etc/icinga2/features-available/ido-mysql.conf
 ```
     library "db_ido_mysql"
     
@@ -51,4 +52,45 @@ Während der Installation wird ein Deployment Wizard automatisch gestartet. Dies
       database = "icinga"
     }
 ```
+Datenbank und Benutzer anlegen:
+    mysql -u root -p
+    
+```
+CREATE DATABASE icinga;
+CREATE USER 'icinga'@'localhost' IDENTIFIED BY 'STRONG-PASSWORD!';
+GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost';
+FLUSH PRIVILEGES;
+quit;
+```
+Sql-Schema aufspielen:
+```
+wget https://raw.githubusercontent.com/Icinga/icinga2/master/lib/db_ido_mysql/schema/mysql.sql
+sudo mysql -u root -p icinga < mysql.sql
+```
+Anschließend kann die Verbindung mit der Datenbank hergestellt werden.
+```
+icinga2 feature enable ido-mysql
+systemctl restart icinga2
+icinga2 feature list
+icinga2 daemon -C
+```
+### Icinga API aktivieren
+Für das Webfrontend und andere Dienste wird eine API Schnittstelle verwendet.
+```
+icinga2 api setup
+systemctl restart icinga2
+```
+## Icingaweb2 Installation
+### API User anlegen
+In der Datei `/etc/icinga2/conf.d/api-users.conf` den folgenden Eintrag unten in der Datei ergänzen:
+```
+object ApiUser "icingaweb2" {
+  password = "SUPER-GEHEIMES-RANDOM-CHAR-PW!"
+  permissions = [ "status/query", "actions/*", "objects/modify/*", "objects/query/*" ]
+}
+```
+### Webserver und icingaweb2 installieren
+apt-get install apache2 icingaweb2 libapache2-mod-php icingacli
 
+### Icingaweb2 Datenbank anlegen
+Icingaweb2 benötigt ebenfalls ein eigenes Datenbank-backend.
