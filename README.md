@@ -56,16 +56,16 @@ Datenbank und Benutzer anlegen:
     mysql -u root -p
     
 ```
-CREATE DATABASE icinga;
-CREATE USER 'icinga'@'localhost' IDENTIFIED BY 'STRONG-PASSWORD!';
-GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost';
+CREATE DATABASE icinga2;
+CREATE USER 'icinga2'@'localhost' IDENTIFIED BY 'STRONG-PASSWORD!';
+GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga2.* TO 'icinga2'@'localhost';
 FLUSH PRIVILEGES;
 quit;
 ```
 Sql-Schema aufspielen:
 ```
 wget https://raw.githubusercontent.com/Icinga/icinga2/master/lib/db_ido_mysql/schema/mysql.sql
-sudo mysql -u root -p icinga < mysql.sql
+sudo mysql -u root -p icinga2 < mysql.sql
 ```
 Anschließend kann die Verbindung mit der Datenbank hergestellt werden.
 ```
@@ -90,7 +90,26 @@ object ApiUser "icingaweb2" {
 }
 ```
 ### Webserver und icingaweb2 installieren
+```
 apt-get install apache2 icingaweb2 libapache2-mod-php icingacli
-
+```
 ### Icingaweb2 Datenbank anlegen
 Icingaweb2 benötigt ebenfalls ein eigenes Datenbank-backend.
+
+    mysql -u root -p  
+```
+CREATE DATABASE icingaweb2;
+CREATE USER 'icingaweb2'@'localhost' IDENTIFIED BY 'Super-Secret-PW!';
+GRANT ALL ON icingaweb2.* TO 'icingaweb2'@'localhost';
+FLUSH PRIVILEGES;
+quit;
+```
+Über das Terminal muss nun noch ein Token generiert werden (Der Token wird zu Authentifizierung am Webinterface benötigt) 
+um die Konifiguration im Webinterface abzuschließen.
+```
+icingacli setup token create
+systemctl restart icinga2 
+systemctl restart apache2
+```
+Über einen Webbrowser wird die Konfiguration abgeschlossen. 
+    http://<IP>/icngaweb2/setup 
