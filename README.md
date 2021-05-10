@@ -185,8 +185,11 @@ systemctl start icinga-director.service
 ```
 ## Performance Grafiken
 ### Installation InfluxDB
+https://docs.influxdata.com/influxdb/v2.0/get-started/?t=Linux
 TODO
 ### Installation Grafana
+https://grafana.com/docs/grafana/latest/installation/debian/
 TODO
 ### Installation Icingaweb2 Plugin
+https://grafana.com/docs/grafana/latest/installation/debian/
 TODO
