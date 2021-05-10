@@ -170,8 +170,10 @@ object ApiUser "director" {
 }
 ```
 ```
-srvicinga2 node setup
+icinga2 node wizard #masternode setup!
 icingacli module enable director
+systemctl restart icinga2
+systemctl restart apache2
 useradd -r -g icingaweb2 -d /var/lib/icingadirector -s /bin/false icingadirector
 install -d -o icingadirector -g icingaweb2 -m 0750 /var/lib/icingadirector
 
