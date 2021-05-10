@@ -183,3 +183,10 @@ systemctl daemon-reload
 systemctl enable icinga-director.service
 systemctl start icinga-director.service
 ```
+## Performance Grafiken
+### Installation InfluxDB
+TODO
+### Installation Grafana
+TODO
+### Installation Icingaweb2 Plugin
+TODO
