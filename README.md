@@ -113,3 +113,71 @@ systemctl restart apache2
 ```
 Über einen Webbrowser wird die Konfiguration abgeschlossen. 
     http://<IP>/icngaweb2/setup 
+
+## Icingaweb2 Modul Director installieren
+
+Um Konfigurationsanpassungen direkt über das Webinterface vorzunehmen wird zusätzlich das Modul Director installiert
+
+### Datenbank für Director installieren:
+``` 
+sudo mysql -u root -p
+
+CREATE DATABASE director;
+CREATE USER 'director'@'localhost' IDENTIFIED BY 'SECURE-PASSWORD!';
+GRANT ALL ON director.* TO 'director'@'localhost';
+FLUSH PRIVILEGES;
+quit;
+```
+Die Datenbank muss nun als neue Ressource in ICINGAWEB2 hinzugefügt werden. Screenshots
+
+Die Modul-Abhägikeiten können mit dem folgenden Script heruntergeladen werden.
+```
+MODULE_NAME=reactbundle
+MODULE_VERSION=v0.9.0
+REPO="https://github.com/Icinga/icingaweb2-module-${MODULE_NAME}"
+MODULES_PATH="/usr/share/icingaweb2/modules"
+git clone ${REPO} "${MODULES_PATH}/${MODULE_NAME}" --branch "${MODULE_VERSION}"
+icingacli module enable "${MODULE_NAME}"
+
+MODULE_NAME=incubator
+MODULE_VERSION=v0.6.0
+REPO="https://github.com/Icinga/icingaweb2-module-${MODULE_NAME}"
+MODULES_PATH="/usr/share/icingaweb2/modules"
+git clone ${REPO} "${MODULES_PATH}/${MODULE_NAME}" --branch "${MODULE_VERSION}"
+icingacli module enable "${MODULE_NAME}"
+
+MODULE_NAME=ipl
+MODULE_VERSION=v0.5.0
+REPO="https://github.com/Icinga/icingaweb2-module-${MODULE_NAME}"
+MODULES_PATH="/usr/share/icingaweb2/modules"
+git clone ${REPO} "${MODULES_PATH}/${MODULE_NAME}" --branch "${MODULE_VERSION}"
+icingacli module enable "${MODULE_NAME}"
+```
+Das eigentliche Modul kann mit dem folgenden Script heruntergeladen werden.
+```
+ICINGAWEB_MODULEPATH="/usr/share/icingaweb2/modules"
+REPO_URL="https://github.com/icinga/icingaweb2-module-director"
+TARGET_DIR="${ICINGAWEB_MODULEPATH}/director"
+MODULE_VERSION="1.8.0"
+git clone "${REPO_URL}" "${TARGET_DIR}" --branch v${MODULE_VERSION}
+```
+Icinga Director bentötigt einen Api-User in der Datei /etc/icinga2/conf.d/api-users.conf
+```
+object ApiUser "director" {
+  password = "GEHEIM!GEHEIM!"
+  permissions = [ "*" ]
+  //client_cn = ""
+}
+```
+```
+srvicinga2 node setup
+icingacli module enable director
+useradd -r -g icingaweb2 -d /var/lib/icingadirector -s /bin/false icingadirector
+install -d -o icingadirector -g icingaweb2 -m 0750 /var/lib/icingadirector
+
+MODULE_PATH=/usr/share/icingaweb2/modules/director
+cp "${MODULE_PATH}/contrib/systemd/icinga-director.service" /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable icinga-director.service
+systemctl start icinga-director.service
+```
