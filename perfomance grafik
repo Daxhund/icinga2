@@ -80,3 +80,5 @@ TARGET_DIR="${ICINGAWEB_MODULEPATH}/grafana"
 git clone "${REPO_URL}" "${TARGET_DIR}"
 icingacli module enable grafana
 ```
+Im Grafana Webinterface ein neues Dashboard importieren
+JSON.config liegt im Git-Repo
