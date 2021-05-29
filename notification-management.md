@@ -14,3 +14,6 @@ Die beide Skripte müssen im Director als "Notification-Command" eingebunden wer
 ![grafik](https://user-images.githubusercontent.com/64025827/120032229-2d705d80-bffa-11eb-89ef-56d17790ffa1.png)
 
 ## Benutzer und Benutzergruppen anlegen
+![grafik](https://user-images.githubusercontent.com/64025827/120070535-50971d80-c08b-11eb-9285-ab8f96a04484.png)
+![grafik](https://user-images.githubusercontent.com/64025827/120070576-81775280-c08b-11eb-9fed-09daebb9d0b8.png)
+![grafik](https://user-images.githubusercontent.com/64025827/120070681-082c2f80-c08c-11eb-858f-90402b2b0524.png)
