@@ -1,7 +1,7 @@
 # Benachrichtigungsmanagement 
 Um eine Überwachung und im Falle eines Ausfalls eine Alarmierung zu ermöglichen kann Icinga2 Für verschiedene Events Benachritugung, bzw. Emails verschicken.
 
-## Konfiguration
+## Email-Benachrichtigung Konfiguration
 Icinga2 bringt breits zwei Skripte für die Email-Benachrichtigung(Host-Events/Service-Events) mit.
 Die Skripte liegen unter ´´´ etc/icinga2/scripts/ ´´´
 
@@ -13,3 +13,4 @@ Die beide Skripte müssen im Director als "Notification-Command" eingebunden wer
 ![grafik](https://user-images.githubusercontent.com/64025827/120032211-25182280-bffa-11eb-9f7f-6c987c022dba.png)
 ![grafik](https://user-images.githubusercontent.com/64025827/120032229-2d705d80-bffa-11eb-89ef-56d17790ffa1.png)
 
+## Benutzer und Benutzergruppen anlegen
