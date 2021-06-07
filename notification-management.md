@@ -42,3 +42,4 @@ Die beide Skripte müssen im Director als "Notification-Command" eingebunden wer
 
 ![grafik](https://user-images.githubusercontent.com/64025827/120892419-7a61be80-c60e-11eb-9b07-bbbb2002364d.png)
 
+![grafik](https://user-images.githubusercontent.com/64025827/121070743-644f2c00-c7cf-11eb-8153-f4a46ebb719e.png)
