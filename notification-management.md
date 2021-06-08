@@ -46,3 +46,6 @@ Die beide Skripte müssen im Director als "Notification-Command" eingebunden wer
 ![grafik](https://user-images.githubusercontent.com/64025827/121179965-965c9e80-c860-11eb-86fd-882b01fba19c.png)
 
 ![grafik](https://user-images.githubusercontent.com/64025827/121180159-d28fff00-c860-11eb-8422-e507a946009a.png)
+
+![grafik](https://user-images.githubusercontent.com/64025827/121192826-9adb8400-c86d-11eb-8c67-c6a3bc077393.png)
+
